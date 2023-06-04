@@ -28,7 +28,7 @@ public class MailTest {
 
     @Test
     public void testHtmlMail(){
-        Context context = new Context();
+        Context context = new Context(); // thymeleaf在spring中的对象
         context.setVariable("username", "sunday");
 
         String content = templateEngine.process("/mail/demo", context);
