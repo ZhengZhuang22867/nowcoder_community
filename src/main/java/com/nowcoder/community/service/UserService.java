@@ -40,49 +40,49 @@ public class UserService implements CommunityConstant {
     @Autowired
     private LoginTicketMapper loginTicketMapper;
 
-    public User findUserById(int id){
+    public User findUserById(int id) {
         return userMapper.selectById(id);
     }
 
     // 用户注册
-    public Map<String, Object> register(User user){
+    public Map<String, Object> register(User user) {
         // map是用来存储报错信息的：<报错信息类型，报错信息内容>
         Map<String, Object> map = new HashMap<>();
 
         // 首先对空值进行判断处理
-        if(user == null){
+        if (user == null) {
             throw new IllegalArgumentException("参数不能为空");
         }
-        if(StringUtils.isBlank(user.getUsername())){
+        if (StringUtils.isBlank(user.getUsername())) {
             map.put("usernameMsg", "账号不能为空");
             return map;
         }
-        if(StringUtils.isBlank(user.getPassword())){
+        if (StringUtils.isBlank(user.getPassword())) {
             map.put("passwordMsg", "密码不能为空");
             return map;
         }
-        if(StringUtils.isBlank(user.getEmail())){
+        if (StringUtils.isBlank(user.getEmail())) {
             map.put("emailMsg", "邮箱不能为空");
             return map;
         }
 
         // 验证用户名是否已经存在
         User u = userMapper.selectByName(user.getUsername());
-        if(null != u){
+        if (null != u) {
             map.put("usernameMsg", "该用户名已存在");
             return map;
         }
 
         // 验证邮箱是否已经存在
         u = userMapper.selectByEmail(user.getEmail());
-        if(null != u){
+        if (null != u) {
             map.put("emailMsg", "该邮箱已经被使用");
             return map;
         }
 
         // 注册用户
         user.setSalt(CommunityUtil.generateUUID().substring(0, 5)); // 设置加密字符串
-        user.setPassword(CommunityUtil.md5(user.getPassword()+ user.getSalt()));
+        user.setPassword(CommunityUtil.md5(user.getPassword() + user.getSalt()));
         user.setStatus(0);
         user.setType(0);
         user.setActivationCode(CommunityUtil.generateUUID());
@@ -93,7 +93,7 @@ public class UserService implements CommunityConstant {
         // 发送激活邮件：activation.html
         Context context = new Context(); // thymeleaf在spring中的内容对象
         context.setVariable("email", user.getEmail());
-            // 设置url：http://localhost:8080/community/activation/101/code
+        // 设置url：http://localhost:8080/community/activation/101/code
         String url = domain + contextPath + "/activation/" + user.getId() + "/" + user.getActivationCode();
         context.setVariable("url", url);
         String content = templateEngine.process("/mail/activation", context);
@@ -103,48 +103,48 @@ public class UserService implements CommunityConstant {
     }
 
     // 激活用户的账号
-    public int activation(int userId, String code){
+    public int activation(int userId, String code) {
         User user = userMapper.selectById(userId);
-        if(user.getStatus() == 1){
+        if (user.getStatus() == 1) {
             return ACTIVATION_REPEAT;
-        }else if(user.getActivationCode().equals(code)){
+        } else if (user.getActivationCode().equals(code)) {
             userMapper.updateStatus(userId, 1);
             return ACTIVATION_SUCCESS;
-        }else{
+        } else {
             return ACTIVATION_FAILURE;
         }
     }
 
     // 用户登录
-    public Map<String, Object> login(String username, String password, long expiredSeconds){
+    public Map<String, Object> login(String username, String password, long expiredSeconds) {
         Map<String, Object> map = new HashMap<>();
 
         // 空值处理
-        if(StringUtils.isBlank(username)){
+        if (StringUtils.isBlank(username)) {
             map.put("usernameMsg", "账号不能为空！");
             return map;
         }
-        if(StringUtils.isBlank(password)){
+        if (StringUtils.isBlank(password)) {
             map.put("passwordMsg", "密码不能为空！");
             return map;
         }
 
         // 验证账号
         User user = userMapper.selectByName(username);
-        if(null == user){
+        if (null == user) {
             map.put("usernameMsg", "该账号不存在！");
             return map;
         }
 
         // 验证账号状态
-        if(user.getStatus() == 0){ // 注册了但是没有激活
+        if (user.getStatus() == 0) { // 注册了但是没有激活
             map.put("usernameMsg", "该账号未激活！");
             return map;
         }
 
         // 验证密码
         password = CommunityUtil.md5(password + user.getSalt());
-        if(!user.getPassword().equals(password)){
+        if (!user.getPassword().equals(password)) {
             map.put("passwordMsg", "密码不正确！");
             return map;
         }
@@ -154,7 +154,7 @@ public class UserService implements CommunityConstant {
         loginTicket.setUserId(user.getId());
         loginTicket.setTicket(CommunityUtil.generateUUID());
         loginTicket.setStatus(0);
-        loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds*1000));
+        loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
         loginTicketMapper.insertLoginTicket(loginTicket);
         map.put("ticket", loginTicket.getTicket());
 
@@ -162,12 +162,17 @@ public class UserService implements CommunityConstant {
     }
 
     // 用户退出
-    public void logout(String ticket){
+    public void logout(String ticket) {
         loginTicketMapper.updateStatus(ticket, 1);
     }
 
     // 通过ticket查询login_ticket表中的ticket对象
-    public LoginTicket findLoginTicket(String ticket){
+    public LoginTicket findLoginTicket(String ticket) {
         return loginTicketMapper.selectByTicket(ticket);
+    }
+
+    // 更新用户头像
+    public int updateHeader(int userId, String headerUrl) {
+        return userMapper.updateHeader(userId, headerUrl);
     }
 }
