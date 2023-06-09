@@ -31,3 +31,12 @@ build/
 
 ### VS Code ###
 .vscode/
+/src/第二章课后题答案/2.5/java/controller/LoginController.java
+/src/第二章课后题答案/2.5/java/service/UserService.java
+/src/第二章课后题答案/2.5/resources/static/js/forget.js
+/src/第二章课后题答案/2.5/resources/templates/mail/forget.html
+/src/第二章课后题答案/2.5/resources/templates/site/forget.html
+/src/第二章课后题答案/2.5/resources/templates/site/login.html
+/src/第二章课后题答案/2.7/java/controller/UserController.java
+/src/第二章课后题答案/2.7/java/service/UserService.java
+/src/第二章课后题答案/2.7/resources/templates/site/setting.html
