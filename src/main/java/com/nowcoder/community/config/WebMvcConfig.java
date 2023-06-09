@@ -1,8 +1,8 @@
 package com.nowcoder.community.config;
 
-import com.nowcoder.community.controller.intercepter.AlphaIntercepter;
-import com.nowcoder.community.controller.intercepter.LoginTicketIntercepter;
-import com.nowcoder.community.dao.LoginTicketMapper;
+import com.nowcoder.community.controller.intercepter.AlphaInterceptor;
+import com.nowcoder.community.controller.intercepter.LoginRequiredInterceptor;
+import com.nowcoder.community.controller.intercepter.LoginTicketInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -15,10 +15,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     // 用于学习拦截器的使用，没有具体的业务逻辑实现
     @Autowired
-    private AlphaIntercepter alphaIntercepter;
+    private AlphaInterceptor alphaIntercepter;
 
     @Autowired
-    private LoginTicketIntercepter loginTicketIntercepter;
+    private LoginTicketInterceptor loginTicketIntercepter;
+
+    @Autowired
+    private LoginRequiredInterceptor loginRequiredInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -29,11 +32,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 // 指明需要拦截的路径
                 .addPathPatterns("/register", "/login", "");
 
-        // LoginTicketInterception业务逻辑实现
+        // 启用LoginTicketInterception，并过滤掉所有静态资源
         registry.addInterceptor(loginTicketIntercepter)
                 .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png","/**/*.jpg", "/**/*.jpeg");
 
+        // 启用LoginRequiredInterceptor，并过滤掉所有静态资源
+        registry.addInterceptor(loginRequiredInterceptor)
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png","/**/*.jpg", "/**/*.jpeg");
     }
-
 
 }

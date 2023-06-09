@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
  * 演示拦截器的语法和使用。
  */
 @Component
-public class AlphaIntercepter implements HandlerInterceptor {
+public class AlphaInterceptor implements HandlerInterceptor {
 
-    private static final Logger logger = LoggerFactory.getLogger(AlphaIntercepter.class);
+    private static final Logger logger = LoggerFactory.getLogger(AlphaInterceptor.class);
 
     // controller之前执行
     @Override

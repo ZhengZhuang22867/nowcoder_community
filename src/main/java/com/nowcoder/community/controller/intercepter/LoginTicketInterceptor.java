@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @Component
-public class LoginTicketIntercepter implements HandlerInterceptor {
+public class LoginTicketInterceptor implements HandlerInterceptor {
 
     @Autowired
     UserService userService;
