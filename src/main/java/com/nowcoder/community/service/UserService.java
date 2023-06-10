@@ -204,4 +204,9 @@ public class UserService implements CommunityConstant {
 
         return map;
     }
+
+    // 验证用户的邮箱是否存在，存在则放松含有忘记密码的验证码的邮件
+//    public Map<String, Object> verifyEmail(String email){
+//
+//    }
 }
