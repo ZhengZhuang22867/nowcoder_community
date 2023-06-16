@@ -15,4 +15,8 @@ public interface DiscussPostMapper {
     // 如果只有一个参数且在<if>中使用即动态查询，则必须起别名。
     int selectDiscussPostRows(@Param("userId") int userId);
 
+    //
+    int insertDiscussPost(DiscussPost discussPost);
+
+
 }
