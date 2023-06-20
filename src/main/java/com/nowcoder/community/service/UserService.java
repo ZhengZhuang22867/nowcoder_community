@@ -209,4 +209,8 @@ public class UserService implements CommunityConstant {
 //    public Map<String, Object> verifyEmail(String email){
 //
 //    }
+
+    public User findUserByName(String username){
+        return userMapper.selectByName(username);
+    }
 }
