@@ -2,9 +2,11 @@ package com.nowcoder.community;
 
 import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.dao.LoginTicketMapper;
+import com.nowcoder.community.dao.MessageMapper;
 import com.nowcoder.community.dao.UserMapper;
 import com.nowcoder.community.entity.DiscussPost;
 import com.nowcoder.community.entity.LoginTicket;
+import com.nowcoder.community.entity.Message;
 import com.nowcoder.community.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class MapperTest {
     private DiscussPostMapper discussPostMapper;
     @Autowired
     private LoginTicketMapper loginTicketMapper;
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Test
     public void testSelectUser(){
@@ -88,6 +92,29 @@ public class MapperTest {
         loginTicketMapper.updateStatus("abc", 1);
         loginTicket = loginTicketMapper.selectByTicket("abc");
         System.out.println(loginTicket);
+    }
+
+    @Test
+    public void testAboutMessage(){
+        List<Message> messages = messageMapper.selectConversations(111, 0, 20);
+        for(Message m : messages){
+            System.out.println(m);
+        }
+        System.out.println("-----------------------------------------------------------------------");
+        int count = messageMapper.selectConversationCount(111);
+        System.out.println(count);
+        System.out.println("-----------------------------------------------------------------------");
+        messages = messageMapper.selectLetters("111_112", 0, 10);
+        for(Message m : messages){
+            System.out.println(m);
+        }
+        System.out.println("-----------------------------------------------------------------------");
+        count = messageMapper.selectLetterCount("111_112");
+        System.out.println(count);
+        System.out.println("-----------------------------------------------------------------------");
+        count = messageMapper.selectLetterUnreadCount(131, "111_131");
+        System.out.println(count);
+
     }
 
 }
