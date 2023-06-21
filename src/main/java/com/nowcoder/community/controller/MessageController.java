@@ -85,7 +85,7 @@ public class MessageController {
 
         // 将未读私信设置为已读
         List<Integer> ids = getUnreadLetterIds(letterList);
-        if(ids != null){
+        if(ids.size() != 0){
             messageService.readMessage(ids, 1);
         }
 

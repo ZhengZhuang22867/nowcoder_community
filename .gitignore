@@ -40,3 +40,7 @@ build/
 /src/第二章课后题答案/2.7/java/controller/UserController.java
 /src/第二章课后题答案/2.7/java/service/UserService.java
 /src/第二章课后题答案/2.7/resources/templates/site/setting.html
+/src/第三章课后题答案/3.8/java/controller/MessageController.java
+/src/第三章课后题答案/3.8/java/service/MessageService.java
+/src/第三章课后题答案/3.8/resources/static/js/letter.js
+/src/第三章课后题答案/3.8/resources/templates/site/letter-detail.html
