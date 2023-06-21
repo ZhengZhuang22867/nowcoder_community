@@ -4,6 +4,7 @@ import com.google.code.kaptcha.Producer;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityConstant;
+import com.nowcoder.community.util.CommunityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
@@ -142,10 +140,53 @@ public class LoginController implements CommunityConstant {
     }
 
     // 获取忘记密码的验证码
-//    @RequestMapping(value = "/forget/code", method = RequestMethod.GET)
-//    public String getForgetCode(String email, HttpSession session){
-//        // 空值判断
-//        if()
-//    }
+    @RequestMapping(value = "/forget/code", method = RequestMethod.GET)
+    @ResponseBody
+    public String getForgetCode(String email, HttpSession session){
+        // 空值判断，不会触发，因为前端里已经做了非空判断
+//        if(StringUtils.isBlank(email)){
+//            return CommunityUtil.getJSONString(1, "邮箱不能为空！");
+//        }
+        // 判断邮箱是否有效，有效：map中含有"code"
+        Map<String, Object> map = userService.verifyEmail(email);
+        if(!map.containsKey("code")){
+            return CommunityUtil.getJSONString(2, "用户名不存在或者用户未激活！");
+        }else{
+            String code = (String)map.get("code");
+            // 将验证码保存于session中用于验证
+            session.setAttribute("verifyCode", code);
+            session.setAttribute("email", email); // 防止有人用a邮件获得了一个正确的验证码，但是之后却想改b的密码
+            return CommunityUtil.getJSONString(0);
+        }
+    }
+
+    @RequestMapping(value = "/forget/resetPassword", method = RequestMethod.POST)
+    public String resetPassword(Model model, String email, String verifyCode, String password, HttpSession session){
+        String rightCode = (String)session.getAttribute("verifyCode");
+        String rightEmail = (String)session.getAttribute("email");
+        // 判断验证码
+        if(StringUtils.isBlank(verifyCode) || StringUtils.isBlank(rightCode) || !rightCode.equals(verifyCode)){
+            model.addAttribute("codeMsg", "验证码错误！");
+            return "/site/forget";
+        }
+        // 判断邮箱
+        if(StringUtils.isBlank(email) || StringUtils.isBlank(rightEmail) || !email.equals(rightEmail)){
+            model.addAttribute("emailMsg", "邮箱错误！");
+            return "/site/forget";
+        }
+        // 修改密码
+        Map<String, Object> map = userService.resetPassword(email, password);
+        if(map.containsKey("passwordMsg")){
+            model.addAttribute("passwordMsg", "密码不能为空！");
+            return "/site/forget";
+        }else{
+            model.addAttribute("msg", "密码已重制成功，可以正常使用了！");
+            model.addAttribute("target", "/login");
+            return "/site/operate-result";
+        }
+
+    }
+
+
 
 }

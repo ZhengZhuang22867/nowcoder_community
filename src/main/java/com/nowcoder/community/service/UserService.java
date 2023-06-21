@@ -205,10 +205,42 @@ public class UserService implements CommunityConstant {
         return map;
     }
 
-    // 验证用户的邮箱是否存在，存在则放松含有忘记密码的验证码的邮件
-//    public Map<String, Object> verifyEmail(String email){
-//
-//    }
+    // 验证用户的邮箱是否有效，存在则发送含有验证码的邮件
+    public Map<String, Object> verifyEmail(String email){
+        User user = userMapper.selectByEmail(email);
+        Map<String, Object> map = new HashMap<>();
+        // 验证用户是否存在，以及是否已经激活
+        if(user == null || user.getStatus() == 0){
+            return map;
+        }
+        // 用户存在
+        // 发送带有验证码的邮件：
+        Context context = new Context(); // thymeleaf在spring中的内容对象
+        context.setVariable("email", email);
+        String code = CommunityUtil.generateUUID().substring(0, 6);
+        context.setVariable("code", code);
+        String content = templateEngine.process("/mail/forget", context);
+        mailClient.sendMail(email, "找回密码", content);
+        // 将code保存
+        map.put("code", code);
+
+        return map;
+    }
+
+    // 重制密码
+    public Map<String, Object> resetPassword(String email, String password){
+        Map<String, Object> map = new HashMap<>();
+        // 判断密码是否为空
+        if(StringUtils.isBlank(password)){
+            map.put("passwordMsg", "密码不得为空！");
+        }
+        // 重制密码
+        User user = userMapper.selectByEmail(email);
+        password = CommunityUtil.md5(password + user.getSalt());
+        userMapper.updatePassword(user.getId(), password);
+
+        return map;
+    }
 
     public User findUserByName(String username){
         return userMapper.selectByName(username);
