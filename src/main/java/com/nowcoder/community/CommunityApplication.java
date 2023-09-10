@@ -12,6 +12,8 @@ public class CommunityApplication {
 		SpringApplication.run(CommunityApplication.class, args);
 
 		// 没有代码变化，只是换了新电脑测试下git是否好用
+
+		// 在终端设置spark的东西，检查下key使否被重制，与内容无关
 	}
 
 }
