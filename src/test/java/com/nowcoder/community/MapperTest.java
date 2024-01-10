@@ -30,11 +30,11 @@ public class MapperTest {
 
     @Test
     public void testSelectUser(){
-//        User user = userMapper.selectById(101);
-        User user1 = userMapper.selectByName("zheng");
+        User user = userMapper.selectById(101);
+//        User user1 = userMapper.selectByName("zheng");
 //        User user2 = userMapper.selectByEmail("nowcoder101@sina.com");
-//        System.out.println(user);
-        System.out.println(user1);
+        System.out.println(user);
+//        System.out.println(user1);
 //        System.out.println(user2);
     }
 

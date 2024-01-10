@@ -44,3 +44,8 @@ build/
 /src/第三章课后题答案/3.8/java/service/MessageService.java
 /src/第三章课后题答案/3.8/resources/static/js/letter.js
 /src/第三章课后题答案/3.8/resources/templates/site/letter-detail.html
+/src/test/java/com/nowcoder/community/Solution.java
+/src/test/java/com/nowcoder/community/Singleton.java
+/log/community/log_error.log
+/log/community/log_info.log
+/log/community/log_warn.log
