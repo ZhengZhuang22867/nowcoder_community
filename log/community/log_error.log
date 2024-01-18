@@ -47,3 +47,13 @@
 2024-01-16 18:55:38,224 ERROR [http-nio-8080-exec-3] c.n.c.a.ExceptionAdvice [ExceptionAdvice.java:24] org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 2024-01-16 18:55:38,224 ERROR [http-nio-8080-exec-3] c.n.c.a.ExceptionAdvice [ExceptionAdvice.java:24] org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 2024-01-16 18:55:38,224 ERROR [http-nio-8080-exec-3] c.n.c.a.ExceptionAdvice [ExceptionAdvice.java:24] java.lang.Thread.run(Thread.java:750)
+2024-01-18 16:16:48,210 ERROR [main] o.s.k.s.LoggingProducerListener [LogAccessor.java:261] Exception thrown when sending a message with key='null' and payload='你好' to topic test:
+org.apache.kafka.common.errors.TimeoutException: Topic test not present in metadata after 60000 ms.
+2024-01-18 16:19:11,069 ERROR [main] o.s.k.s.LoggingProducerListener [LogAccessor.java:261] Exception thrown when sending a message with key='null' and payload='你好' to topic test:
+org.apache.kafka.common.errors.TimeoutException: Topic test not present in metadata after 60000 ms.
+2024-01-18 16:23:00,133 ERROR [main] o.s.k.s.LoggingProducerListener [LogAccessor.java:261] Exception thrown when sending a message with key='null' and payload='你好' to topic test:
+org.apache.kafka.common.errors.TimeoutException: Topic test not present in metadata after 60000 ms.
+2024-01-18 16:29:19,422 ERROR [main] o.s.k.s.LoggingProducerListener [LogAccessor.java:261] Exception thrown when sending a message with key='null' and payload='你好' to topic test:
+org.apache.kafka.common.errors.TimeoutException: Topic test not present in metadata after 60000 ms.
+2024-01-18 16:32:09,537 ERROR [main] o.s.k.s.LoggingProducerListener [LogAccessor.java:261] Exception thrown when sending a message with key='null' and payload='你好' to topic test:
+org.apache.kafka.common.errors.TimeoutException: Topic test not present in metadata after 60000 ms.
